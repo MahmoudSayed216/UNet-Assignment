@@ -9,6 +9,6 @@ new_size: 256
 
 #model
 lr: 0.0005
-epochs: 35
+epochs: 50
 level: -1
 batch_size: 32
