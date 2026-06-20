@@ -12,5 +12,5 @@ lr: 0.001
 epochs: 120
 level: -1
 batch_size: 16
-lr_reduction_factor: 0.6
-reduce_on_plateau_patience: 9
+lr_reduction_factor: 0.7
+reduce_on_plateau_patience: 10
