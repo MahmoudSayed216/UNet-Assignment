@@ -50,9 +50,9 @@ def train(configs, level):
     test_dataset = SegmentationDS(configs, split='test')
 
     train_loader = DataLoader(train_dataset, batch_size=int(configs['batch_size']), shuffle=True,
-                               num_workers=6, pin_memory=True)
+                               num_workers=4, pin_memory=True)
     test_loader  = DataLoader(test_dataset,  batch_size=int(configs['batch_size']), shuffle=True,
-                               num_workers=6, pin_memory=True)
+                               num_workers=4, pin_memory=True)
 
     model = UNet(level=level, n_classes=n_classes)
 
