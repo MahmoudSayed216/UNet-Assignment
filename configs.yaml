@@ -1,0 +1,14 @@
+#data
+dataset_path: "/home/mahmoud-sayed/Desktop/ITI/Computer VIsion/Data/images"
+color_map_path: "/home/mahmoud-sayed/Desktop/ITI/Computer VIsion/Assignment 2/color_map.json"
+train_ratio: 0.8
+n_classes: 11
+
+
+
+
+#model
+lr: 0.001
+epochs: 1
+level: -1
+batch_size: 3
