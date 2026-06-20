@@ -9,6 +9,6 @@ n_classes: 11
 
 #model
 lr: 0.001
-epochs: 1
+epochs: 20
 level: -1
-batch_size: 3
+batch_size: 32
