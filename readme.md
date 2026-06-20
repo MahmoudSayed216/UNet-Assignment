@@ -1,3 +1,5 @@
+# Before reading, you can find training logs and inference images in the MAIN NOTEBOOK.ipynb 
+
 # Skip Connections Experimentations
 
 UNets (by design) lose spatial information with downsampling.
@@ -70,5 +72,5 @@ so, as can be seen, the network with full connections got the best scores per cl
 the network with level 3 connections got the worst scores.
 
 
-one more observations is that the masks of the network with full connections look more coherent, connected, and well detailed around the object.
-whereas the masks of networks with lower connections have chunky and flawed masks due to the loss of information
+one more observations is that the masks of the network with full connections look more coherent, connected, and well detailed around the object, and it assigned correct classes per objec.
+whereas the masks of networks with lower connections have chunky and flawed masks as well as some wrong classes due to the loss of information
