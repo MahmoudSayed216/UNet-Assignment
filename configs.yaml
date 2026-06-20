@@ -11,4 +11,4 @@ new_size: 256
 lr: 0.0005
 epochs: 50
 level: -1
-batch_size: 128
+batch_size: 192
