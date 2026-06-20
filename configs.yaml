@@ -9,7 +9,7 @@ new_size: 256
 
 #model
 lr: 0.001
-epochs: 100
+epochs: 120
 level: -1
 batch_size: 16
 lr_reduction_factor: 0.6
