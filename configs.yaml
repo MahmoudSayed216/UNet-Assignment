@@ -3,7 +3,7 @@ dataset_path: "/kaggle/input/datasets/sadhliroomyprime/football-semantic-segment
 color_map_path: "/kaggle/working/UNet-Assignment/color_map.json"
 train_ratio: 0.8
 n_classes: 11
-
+new_size: 256
 
 
 

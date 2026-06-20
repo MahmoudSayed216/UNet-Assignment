@@ -42,7 +42,7 @@ class SegmentationDS(Dataset):
         self.path = configs['dataset_path']
         self.mask_suffix = "___fuse.png"
         self.save_suffix = "___save.png"
-
+        self.new_size = int(configs['new_size'])
         files = sorted(os.listdir(path=self.path), key=natural_sort_key)
         files = [f for f in files
                  if not f.endswith(self.mask_suffix) and not f.endswith(self.save_suffix)]
@@ -65,7 +65,7 @@ class SegmentationDS(Dataset):
                   f"but n_classes={self.n_classes}. Inspect {cache_path}.")
 
         self.image_transform = transforms.Compose([
-            transforms.Resize((256, 256)),
+            transforms.Resize((self.new_size, self.new_size)),
             transforms.ToTensor(),
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                   std=[0.229, 0.224, 0.225]),
@@ -81,7 +81,7 @@ class SegmentationDS(Dataset):
 
         image = Image.open(os.path.join(self.path, img_name)).convert("RGB")
         mask = Image.open(os.path.join(self.path, mask_name)).convert("RGB")
-        mask = mask.resize((576, 576), Image.NEAREST)   # NEAREST -> no new blended colors
+        mask = mask.resize((self.new_size, self.new_size), Image.NEAREST)   # NEAREST -> no new blended colors
 
         image_tensor = self.image_transform(image)
 
