@@ -54,7 +54,6 @@ class SegmentationDS(Dataset):
             self.split_files = files[:self.n_files]
         else:
             self.split_files = files[self.n_files:]
-        print("DING")
         # Discover colors using the FULL file list (not just this split),
         # so train and test always agree on channel <-> color mapping.
         cache_path = configs["color_map_path"]
@@ -70,8 +69,6 @@ class SegmentationDS(Dataset):
             transforms.Normalize(mean=[0.485, 0.456, 0.406],
                                   std=[0.229, 0.224, 0.225]),
         ])
-        for file in self.split_files:
-            print(file)
     def __len__(self):
         return len(self.split_files)
 
