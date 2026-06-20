@@ -68,3 +68,7 @@ and this table shows IoU score per class across all experiments.
 so, as can be seen, the network with full connections got the best scores per class than the rest of the networks.
 
 the network with level 3 connections got the worst scores.
+
+
+one more observations is that the masks of the network with full connections look more coherent, connected, and well detailed around the object.
+whereas the masks of networks with lower connections have chunky and flawed masks due to the loss of information
