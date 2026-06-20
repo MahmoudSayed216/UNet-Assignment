@@ -1,6 +1,16 @@
-# Before reading, you can find training logs and inference images in the MAIN NOTEBOOK.ipynb 
+# Before reading, you can find training logs and inference images in the `MAIN NOTEBOOK.ipynb`
 
 # Skip Connections Experimentations
+
+## Training setup
+
+- 3 levels UNet
+- lr: 0.001
+- epochs: 120
+- batch_size: 16
+- reduce lr on plateau:
+  - lr_reduction_factor: 0.7
+  - reduce_on_plateau_patience: 10
 
 UNets (by design) lose spatial information with downsampling.
 
@@ -33,7 +43,7 @@ a normal BCELoss would just give the same weight for all class, and it'd result 
 
 here's a table showing the Dice score per class through all experiments.
 
-## Dice Score per Class
+## `Dice Score` per Class
 
 | Class | All Connections |    Level 1 |    Level 2 | Level 3 |
 | ----- | --------------: | ---------: | ---------: | ------: |
@@ -51,7 +61,7 @@ here's a table showing the Dice score per class through all experiments.
 
 and this table shows IoU score per class across all experiments.
 
-## IoU Score per Class
+## `IoU Score` per Class
 
 | Class | All Connections |    Level 1 |    Level 2 | Level 3 |
 | ----- | --------------: | ---------: | ---------: | ------: |
@@ -71,6 +81,8 @@ so, as can be seen, the network with full connections got the best scores per cl
 
 the network with level 3 connections got the worst scores.
 
+## Masks Quality Observations
 
 one more observations is that the masks of the network with full connections look more coherent, connected, and well detailed around the object, and it assigned correct classes per objec.
-whereas the masks of networks with lower connections have chunky and flawed masks as well as some wrong classes due to the loss of information
+
+whereas the masks of networks with lower connections have chunky and flawed masks as well as some wrong classes due to the loss of information.
