@@ -1,6 +1,6 @@
 #data
-dataset_path: "/home/mahmoud-sayed/Desktop/ITI/Computer VIsion/Data/images"
-color_map_path: "/home/mahmoud-sayed/Desktop/ITI/Computer VIsion/Assignment 2/color_map.json"
+dataset_path: "/kaggle/input/datasets/sadhliroomyprime/football-semantic-segmentation/images"
+color_map_path: "/kaggle/working/UNet-Assignment/color_map.json"
 train_ratio: 0.8
 n_classes: 11
 

@@ -1,6 +1,7 @@
 from dataset import SegmentationDS
 from torch.utils.data import DataLoader
 from model import UNet
+import argparse
 import tqdm
 import yaml
 import torch
@@ -41,7 +42,7 @@ def evaluate(model, loader, device, n_classes):
     return total_iou / n_batches, total_dice / n_batches
 
 
-def train(configs):
+def train(configs, level):
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     n_classes = configs['n_classes']
 
@@ -53,7 +54,7 @@ def train(configs):
     test_loader  = DataLoader(test_dataset,  batch_size=int(configs['batch_size']), shuffle=True,
                                num_workers=6, pin_memory=True)
 
-    model = UNet(level=int(configs['level']), n_classes=n_classes)
+    model = UNet(level=level, n_classes=n_classes)
 
     n_gpus = torch.cuda.device_count()
     if n_gpus > 1:
@@ -96,7 +97,7 @@ def train(configs):
         if mean_dice > best_dice:
             best_dice = mean_dice
             state_dict = model.module.state_dict() if isinstance(model, nn.DataParallel) else model.state_dict()
-            torch.save(state_dict, 'best_model.pth')
+            torch.save(state_dict, f'best_model_level{level}.pth')
 
 
 def load_configs(configs_path):
@@ -107,10 +108,18 @@ def load_configs(configs_path):
 
 
 def main():
-    CONFIGS_PATH = './configs.yaml'
-    configs = load_configs(CONFIGS_PATH)
+    parser = argparse.ArgumentParser(description="Train the UNet segmentation model.")
+    parser.add_argument('--configs', type=str, default='/kaggle/working/UNet-Assignment/configs.yaml',
+                         help="Path to the YAML configs file")
+    parser.add_argument('--level', type=int, required=True,
+                         help="Skip-connection level: -1 (all), 1, or 2")
+    args = parser.parse_args()
+
+    configs = load_configs(args.configs)
     print("configs: ", configs)
-    train(configs)
+    print("level: ", args.level)
+
+    train(configs, args.level)
 
 
 if __name__ == "__main__":
