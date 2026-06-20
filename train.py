@@ -64,7 +64,7 @@ def train(configs, level):
 
     model = model.to(device)
 
-    optim = torch.optim.Adam(params=model.parameters(), lr=float(configs['lr']))
+    optim = torch.optim.Adam(params=model.parameters(), lr=float(configs['lr']), )
 
     # Reduce LR when the validation mDice stops improving.
     scheduler = ReduceLROnPlateau(
