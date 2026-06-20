@@ -6,6 +6,7 @@ import tqdm
 import yaml
 import torch
 import torch.nn as nn
+from torch.optim.lr_scheduler import ReduceLROnPlateau
 from loss import BCEDiceLoss
 
 
@@ -64,6 +65,15 @@ def train(configs, level):
     model = model.to(device)
 
     optim = torch.optim.Adam(params=model.parameters(), lr=float(configs['lr']))
+
+    # Reduce LR when the validation mDice stops improving.
+    scheduler = ReduceLROnPlateau(
+        optim,
+        mode='max',
+        factor=float(configs['lr_reduction_factor']),
+        patience=int(configs['reduce_on_plateau_patience']),
+    )
+
     criterion = BCEDiceLoss()
 
     n_epochs = int(configs['epochs'])
@@ -96,6 +106,12 @@ def train(configs, level):
         print(f"Epoch [{epoch+1}/{n_epochs}] "
               f"Train Loss: {avg_train_loss:.4f} | "
               f"Test mIoU: {mean_iou:.4f} | Test mDice: {mean_dice:.4f}")
+
+        lr_before = optim.param_groups[0]['lr']
+        scheduler.step(mean_dice)
+        lr_after = optim.param_groups[0]['lr']
+        if lr_after != lr_before:
+            print(f"  LR reduced: {lr_before:.6f} -> {lr_after:.6f}")
 
         if mean_iou > best_iou:
             best_iou = mean_iou
