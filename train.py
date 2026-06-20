@@ -50,9 +50,9 @@ def train(configs, level):
     test_dataset = SegmentationDS(configs, split='test')
 
     train_loader = DataLoader(train_dataset, batch_size=int(configs['batch_size']), shuffle=True,
-                               num_workers=4, pin_memory=True)
+                               num_workers=6, pin_memory=True)
     test_loader  = DataLoader(test_dataset,  batch_size=int(configs['batch_size']), shuffle=True,
-                               num_workers=4, pin_memory=True)
+                               num_workers=6, pin_memory=True)
 
     model = UNet(level=level, n_classes=n_classes)
 
@@ -68,6 +68,9 @@ def train(configs, level):
 
     n_epochs = int(configs['epochs'])
     best_dice = 0.0
+    best_iou = 0.0
+    best_dice_per_class = None
+    best_iou_per_class = None
 
     for epoch in range(n_epochs):
         model.train()
@@ -94,11 +97,21 @@ def train(configs, level):
               f"Train Loss: {avg_train_loss:.4f} | "
               f"Test mIoU: {mean_iou:.4f} | Test mDice: {mean_dice:.4f}")
 
+        if mean_iou > best_iou:
+            best_iou = mean_iou
+            best_iou_per_class = iou_per_class
+
         if mean_dice > best_dice:
             best_dice = mean_dice
+            best_dice_per_class = dice_per_class
             state_dict = model.module.state_dict() if isinstance(model, nn.DataParallel) else model.state_dict()
             torch.save(state_dict, f'best_model_level{level}.pth')
 
+    print("\nTraining complete.")
+    print(f"Best Test mDice: {best_dice:.4f}")
+    print(f"Best Test mIoU:  {best_iou:.4f}")
+    print(f"Per-class Dice at best epoch: {[round(v, 4) for v in best_dice_per_class.cpu().tolist()]}")
+    print(f"Per-class IoU at best epoch:  {[round(v, 4) for v in best_iou_per_class.cpu().tolist()]}")
 
 def load_configs(configs_path):
     file = open(configs_path, mode='r')
